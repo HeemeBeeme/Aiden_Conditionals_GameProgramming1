@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,15 +18,46 @@ namespace Aiden_Conditionals_GameProgramming1
             Shotgun,
         }
 
+        static string weaponName;
+        static string Status = "Perfectly Healthy";
 
         static int MaxHealth = 100;
         static int Health = 100;
 
         static string HealthHUD = $"{Health}/{MaxHealth}";
+        static string HealthStatus()
+        {
+
+            if (Health == 100 & Health > 90)
+            {
+                Status = "Perfectly Healthy!";
+            }
+            else if (Health > 60 && Health < 90)
+            {
+                Status = "Healthy!";
+            }
+            else if (Health > 30 && Health < 60)
+            {
+                Status = "Hurt";
+            }
+            else if (Health > 1 && Health < 30)
+            {
+                Status = "Critical Health!";
+            }
+            else (Health == 0 && Health < 0)
+            {
+                Health = 0;
+                Status = "You are Dead!";
+            }
+
+                return Status;
+        }
 
         static void showHUD()
         {
-            Console.WriteLine("{0,0}{0,0}{0,0}", $"Health: {HealthHUD}");
+            HealthStatus();
+
+            Console.WriteLine("{0,0}{1,0}{2,0}", $"Health: {HealthHUD}", $"Status: {Status}", $"Weapon: {weaponName}");
         }
 
         static void Main(string[] args)
@@ -36,23 +68,23 @@ namespace Aiden_Conditionals_GameProgramming1
             switch (weapon)
             {
                 case WeaponType.Grenade:
-                    //something
+                    weaponName = "Grenade";
                     break;
 
                 case WeaponType.Fist:
-                    //something
+                    weaponName = "Fist";
                     break;
 
                 case WeaponType.Knife:
-                    //something
+                    weaponName = "Knife";
                     break;
 
                 case WeaponType.Pistol:
-                    //something
+                    weaponName = "Pistol";
                     break;
 
                 case WeaponType.Shotgun:
-                    //something
+                    weaponName = "Shotgun";
                     break;
             }
 
