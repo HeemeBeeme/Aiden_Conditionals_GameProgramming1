@@ -19,7 +19,7 @@ namespace Aiden_Conditionals_GameProgramming1
         }
 
         static string weaponName;
-        static string Status = "Perfectly Healthy";
+        static string Status;
 
         static int MaxHealth = 100;
         static int Health = 100;
