@@ -24,9 +24,15 @@ namespace Aiden_Conditionals_GameProgramming1
 
         static string Status;
         static int CapableDamage;
+        static int DamageMult = 1;
         static int MaxHealth = 100;
         static int Health = 100;
+        static int Score = 0;
+
+        static int GoblinHealth = 100;
+
         static int TakenDmG;
+        static int SpecialAttackDamage;
         static int PotionPotency;
         static string PotionName;
 
@@ -41,7 +47,7 @@ namespace Aiden_Conditionals_GameProgramming1
         static string HealthStatus()
         {
 
-            if (Health == 100 & Health > 90)
+            if (Health == 100 && Health > 90)
             {
                 Status = "Perfectly Healthy!";
             }
@@ -57,7 +63,7 @@ namespace Aiden_Conditionals_GameProgramming1
             {
                 Status = "Critical Health!";
             }
-            else if(Health == 0 && Health < 0)
+            else if(Health == 0 || Health < 0)
             {
                 Health = 0;
                 Status = "You are Dead!";
@@ -83,37 +89,39 @@ namespace Aiden_Conditionals_GameProgramming1
             {
                 case WeaponType.Grenade:
                     weaponName = "Grenade";
-                    CapableDamage = DamageRnD.Next(10, 40);
+                    CapableDamage = DamageRnD.Next(30, 50) * DamageMult;
                     break;
 
                 case WeaponType.Fist:
                     weaponName = "Fist";
-                    CapableDamage = DamageRnD.Next(2, 5);
+                    CapableDamage = DamageRnD.Next(10, 25) * DamageMult;
                     break;
 
                 case WeaponType.Knife:
                     weaponName = "Knife";
-                    CapableDamage = DamageRnD.Next(3, 10);
+                    CapableDamage = DamageRnD.Next(30, 60) * DamageMult;
                     break;
 
                 case WeaponType.Pistol:
                     weaponName = "Pistol";
-                    CapableDamage = DamageRnD.Next(7, 20);
+                    CapableDamage = DamageRnD.Next(40, 80) * DamageMult;
                     break;
 
                 case WeaponType.Shotgun:
                     weaponName = "Shotgun";
-                    CapableDamage = DamageRnD.Next(20, 35);
+                    CapableDamage = DamageRnD.Next(50, 100) * DamageMult;
                     break;
             }
 
-            Console.WriteLine("{0,0}{1,30}{2,20}", $"Health: {Health}/{MaxHealth}", $"Status: {Status}", $"Weapon: {weaponName}");
+            Console.WriteLine("{0,0}{1,30}{2,20}{3, 20}", $"Health: {Health}/{MaxHealth}", $"Status: {Status}", $"Weapon: {weaponName}", $"Score: {Score}");
         }
 
         static Random DamageRnD = new Random();
         static Random WeaponRnD = new Random();
         static Random TakenDmgRnD = new Random();
         static Random PotionRnD = new Random();
+        static Random ScoreRnD = new Random();
+
 
 
         static void RandomWeapon()
@@ -145,6 +153,11 @@ namespace Aiden_Conditionals_GameProgramming1
 
             Health += PotionPotency;
 
+            if(Health > 100)
+            {
+                Health = 100;
+            }
+
         }
 
         static void DamageDealt()
@@ -152,6 +165,7 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Damage Dealt: {CapableDamage}");
             Console.ResetColor();
+            GoblinHealth -= CapableDamage;
         }
 
         static void DamageTaken()
@@ -167,6 +181,34 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ResetColor();
         }
 
+        static void RandomScore()
+        {
+            Score += ScoreRnD.Next(20,150);
+        }
+
+        static void GoblinStatus()
+        {
+            if (GoblinHealth == 0 || GoblinHealth < 0)
+            {
+                Console.Clear();
+                RandomScore();
+                showHUD();
+                SkipLine();
+                Console.WriteLine("You have defeated the goblin!");
+                SkipLine();
+                Console.WriteLine($"Your Score was: {Score}");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+
+        }
+
+        static void GoblinSpecialAttack()
+        {
+            SpecialAttackDamage = Health;
+            Health -= Health;
+        }
+
         static void Main(string[] args)
         {
 
@@ -178,6 +220,7 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.Clear();
 
             Health -= 10;
+            RandomScore();
             showHUD();
             SkipLine();
             Console.WriteLine("Ahh! You step into some thorns!");
@@ -192,6 +235,7 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ReadKey();
             Console.Clear();
 
+            RandomScore();
             showHUD();
             SkipLine();
             Console.WriteLine("The Cave is damp and dark, but you see something on the ground...");
@@ -199,6 +243,7 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ReadKey();
             Console.Clear();
 
+            RandomScore();
             RandomWeapon();
             showHUD();
             SkipLine();
@@ -207,16 +252,19 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ReadKey();
             Console.Clear();
 
+            RandomScore();
             showHUD();
             SkipLine();
             Console.WriteLine("A goblin runs out after you, you act quickly and attack it!");
             SkipLine();
             DamageDealt();
             Console.ReadKey();
+            GoblinStatus();
             Console.Clear();
 
 
             DamageTaken();
+            RandomScore();
             showHUD();
             SkipLine();
             Console.WriteLine("The goblin hits you with his club!");
@@ -234,7 +282,33 @@ namespace Aiden_Conditionals_GameProgramming1
             Console.ReadKey();
             Console.Clear();
 
+            showHUD();
+            RandomScore();
+            SkipLine();
+            Console.WriteLine("You attack the goblin Twice more!");
+            DamageMult = 2;
+            SkipLine();
+            DamageDealt();
+            Console.ReadKey();
+            GoblinStatus();
+            Console.Clear();
 
+            GoblinSpecialAttack();
+            showHUD();
+            SkipLine();
+            Console.WriteLine("The goblin attacks as hard as it can!");
+            SkipLine();
+            Console.WriteLine($"Damage Taken: {SpecialAttackDamage}");
+            Console.ReadKey();
+            Console.Clear();
+
+            showHUD();
+            SkipLine();
+            Console.WriteLine("You have died!");
+            SkipLine();
+            Console.WriteLine($"Your Score was: {Score}");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 }
