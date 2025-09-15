@@ -44,7 +44,11 @@ namespace Aiden_Conditionals_GameProgramming1
             {
                 Status = "Critical Health!";
             }
-            else (Health == 0 && Health < 0)
+            else if(Health == 0)
+            {
+                Status = "You are Dead!";
+            }
+            else
             {
                 Health = 0;
                 Status = "You are Dead!";
@@ -57,7 +61,7 @@ namespace Aiden_Conditionals_GameProgramming1
         {
             HealthStatus();
 
-            Console.WriteLine("{0,0}{1,0}{2,0}", $"Health: {HealthHUD}", $"Status: {Status}", $"Weapon: {weaponName}");
+            Console.WriteLine("{0,0}{1,30}{2,15}", $"Health: {HealthHUD}", $"Status: {Status}", $"Weapon: {weaponName}");
         }
 
         static void Main(string[] args)
