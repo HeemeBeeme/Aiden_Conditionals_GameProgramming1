@@ -44,11 +44,7 @@ namespace Aiden_Conditionals_GameProgramming1
             {
                 Status = "Critical Health!";
             }
-            else if(Health == 0)
-            {
-                Status = "You are Dead!";
-            }
-            else
+            else if(Health == 0 && Health < 0)
             {
                 Health = 0;
                 Status = "You are Dead!";
@@ -92,7 +88,13 @@ namespace Aiden_Conditionals_GameProgramming1
                     break;
             }
 
+            Health -= 10;
+            Console.WriteLine($"{Health}");
             showHUD();
+            Console.WriteLine();
+            Console.WriteLine("You are walking in the forest and you step on some thorns!");
+
+            Console.ReadKey();
 
             
         }
